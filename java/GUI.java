@@ -4,17 +4,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.File;
-import java.io.IOException;
 import java.util.Map;
-import java.util.TreeMap;
 
-public class GUI extends JFrame {
+public class GUI extends JFrame implements Colors, CutsomFont, ReadProfiles {
 
     private final JLabel userNameLabel;
     private final JTextField userName;
     private final JLabel passwordLabel;
     private final JPasswordField password;
+    private final JButton newProfile;
     private final JButton loginButton;
 
     private Map<String, String> users;
@@ -25,11 +23,6 @@ public class GUI extends JFrame {
         super("Interfejs użytkownika");
 
 
-        //wyglad interfejsu
-
-        Color backgroundColor = new Color(60, 63, 65);
-        Color textColor = new Color(252, 122, 1);
-        Color enterColor = Color.WHITE;
 
         //ustawienie tla dla calego okna
 
@@ -41,43 +34,23 @@ public class GUI extends JFrame {
          userName = new JTextField();
          passwordLabel = new JLabel("haslo");
          password = new JPasswordField();
+         newProfile = new JButton("Utworz uzytkownika");
          loginButton = new JButton("Zaloguj");
 
         //wyglad komponentow
 
-        userNameLabel.setForeground(textColor);
-        userNameLabel.setBackground(backgroundColor);
+        setColors(userNameLabel, passwordLabel, newProfile, loginButton);
+        setColors(ColorType.ENTER, userName, password);
 
-        userName.setForeground(enterColor);
-        userName.setBackground(backgroundColor);
 
-        passwordLabel.setForeground(textColor);
-        passwordLabel.setBackground(backgroundColor);
-
-        password.setForeground(enterColor);
-        password.setBackground(backgroundColor);
-
-        loginButton.setBackground(new Color(76, 175, 80));
-        loginButton.setForeground(Color.WHITE);
+        setButtonColor(newProfile, loginButton);
 
         //ustawienie czcionki elementow
 
-        try {
-            Font f = Font.createFont(Font.TRUETYPE_FONT, new File("src/main/fonts/static/Nunito-Black.ttf"));
-            Font font = f.deriveFont(Font.PLAIN, 14);
-
-            userNameLabel.setFont(font);
-            userName.setFont(font);
-            passwordLabel.setFont(font);
-            password.setFont(font);
-            loginButton.setFont(f.deriveFont(Font.PLAIN, 18));
-
-        } catch (FontFormatException | IOException e) {
-            e.printStackTrace();
-        }
+        fonts(14, userNameLabel, userName, passwordLabel, password);
+        fonts(14, newProfile, loginButton);
 
         //przechwytywanie zdarzen z danych elementow
-
 
         userName.addKeyListener(new KeyAdapter() {
             @Override
@@ -97,7 +70,17 @@ public class GUI extends JFrame {
             }
         });
 
-        users = addUsers();
+
+
+        newProfile.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                new AddProfileWindow();
+
+            }
+        });
+
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -115,72 +98,44 @@ public class GUI extends JFrame {
         add(passwordLabel);
         add(password);
 
-        add(new JLabel());
+        add(newProfile);
         add(loginButton);
 
         //domyslne ustawienia okna interfejsu
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(300,150);
+        setSize(450,150);
         setLocationRelativeTo(null);
         setVisible(true);
     }
 
-    private Map<String, String> addUsers(){
-        Map<String, String> users = new TreeMap<>();
-
-        //admin
-        users.put("admin", "admin");
-
-        //pozostali uzytkownicy
-        for(int pos = 1; pos < 6; pos++)
-            users.put("user" + pos, "password"+ pos);
-        System.out.println("\nUsers: " + users + "\n\n");
-        return users;
-    }
-
     private void performLogin(){
-        users = addUsers();
+        users = readProfiles();
+
+        if(users.size() == 0) {
+            JOptionPane.showMessageDialog(GUI.this, "Brak uzytkownikow !\nDodaj uzykownika, aby kontynuowac.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         String enteredUsername = userName.getText();
         //zamiana zakodowanego hasla na tekst
         String enteredPassword = new String(password.getPassword());
         if (users.containsKey(enteredUsername) && users.get(enteredUsername).equals(enteredPassword)) {
             //otwarcie okna danego uzytkowika
             System.out.println("Wprowadzony uzytkownik: " + enteredUsername + "\nWprowadzone haslo: " + enteredPassword);
-            removeAllComponents();
-            userProfile(enteredUsername);
+            new UserProfile(enteredUsername);
         } else {
             //wyskakujace okno informujace o nieprwidlowym hasle lub uzytkowniku
-            JOptionPane.showMessageDialog(GUI.this, "Nieprawidlowe haslo lub uzytkownik!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(GUI.this, "Nieprawidlowe haslo lub uzytkownik !", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    private void removeAllComponents() {
+    public void removeAllComponents() {
         getContentPane().removeAll();
     }
 
-    private void userProfile(String user) {
-
-        setSize(300, 430);
-        setLayout(new FlowLayout());
-
-        //ikona profilu
-
-        Icon icon = new ImageIcon("src/main/Images/icon.png");
-        JLabel jLabel = new JLabel();
-        jLabel.setIcon(icon);
-        jLabel.setHorizontalAlignment(JLabel.CENTER);
-        add(jLabel);
-
-        //nazwa uzytkownika
-        userNameLabel.setFont(new Font("Arial", Font.BOLD, 40));
-        userNameLabel.setText(user);
-        userNameLabel.setHorizontalAlignment(JLabel.CENTER);
-        add(userNameLabel);
-
-
-        revalidate();
-        repaint();
+    public JLabel getUserNameLabel() {
+        return userNameLabel;
     }
 
 
