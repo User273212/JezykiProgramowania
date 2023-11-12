@@ -7,9 +7,11 @@ public class UserProfile extends GUI{
 
     private final JLabel userNameLabel;
     private final JButton logOut;
+    private final JButton deleteUser;
     public UserProfile(String user) {
         userNameLabel = getUserNameLabel();
         logOut = new JButton("Wyloguj sie");
+        deleteUser = new JButton("Usun uzytkownika");
         visuals(user);
 
         logOut.addActionListener(new ActionListener() {
@@ -18,19 +20,33 @@ public class UserProfile extends GUI{
                 dispose();
             }
         });
+
+        deleteUser.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int response = JOptionPane.showConfirmDialog(UserProfile.this, "Czy na pewno chcesz usunac tego uzytkownika ?", "Potwierdzenie", JOptionPane.YES_NO_OPTION);
+                if (response == JOptionPane.YES_OPTION) {
+                    new DeleteProfile(userNameLabel.getText());
+                    dispose();
+                }
+            }
+        });
     }
 
     private void visuals(String user) {
         removeAllComponents();
 
-        setSize(300, 400);
+        setSize(320, 400);
         setLayout(new BorderLayout(5, 3));
 
         //przycisk wylogowania w prawym gornym rogu
-        JPanel panelButton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        fonts(15, logOut);
-        panelButton.add(logOut);
-        add(panelButton, BorderLayout.NORTH);
+        JPanel logoutPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        fonts(15, logOut, deleteUser);
+        deleteUser.setBackground(Color.RED);
+        deleteUser.setForeground(Color.BLACK);
+        logoutPanel.add(deleteUser);
+        logoutPanel.add(logOut);
+        add(logoutPanel, BorderLayout.NORTH);
 
         //ikona i nazwa profilu
         JPanel panelCenter = new JPanel(new BorderLayout());
@@ -51,7 +67,7 @@ public class UserProfile extends GUI{
         add(panelCenter, BorderLayout.CENTER);
 
         setButtonColor(logOut);
-        setColors(userNameLabel, panelButton, panelCenter);
+        setColors(userNameLabel, logoutPanel, panelCenter);
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 

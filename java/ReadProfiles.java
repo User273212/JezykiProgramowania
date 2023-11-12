@@ -16,7 +16,6 @@ public interface ReadProfiles {
             // Utworzenie obiektu pliku
             File file = new File("src/main/userList/profiles.txt");
 
-
             // Utworzenie obiektu skanera do odczytu pliku
             Scanner scanner = new Scanner(file);
 
@@ -38,12 +37,6 @@ public interface ReadProfiles {
             // Zamkniecie skanera po zakonczeniu odczytu pliku
             scanner.close();
 
-            // Sprawdzenie czy plik istnieje
-            if (file.exists()) {
-                System.out.println("\nPlik " + file.getName() + " istnieje\n");
-            } else {
-                System.out.println("\nPlik " + file.getName() + " nie istnieje\n");
-            }
         } catch (IOException e) {
             // Obsluga bledu w przypadku problemow z odczytem pliku
             System.out.println("\nWystapil blad podczas otwierania\n");
