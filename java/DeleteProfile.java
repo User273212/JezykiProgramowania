@@ -1,4 +1,3 @@
-import javax.swing.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -24,7 +23,7 @@ public class DeleteProfile extends UserProfile {
                 String profile = scanner.nextLine();
 
                 //sprawdzenie czy linia zawiera użytkownika do usunięcia
-                if (!profile.startsWith(user)) {
+                if (!profile.startsWith(user + ":")) {
                     //zapisanie linii (profilu) do pliku tymczasowego
                     tempFileWriter.write(profile + "\n");
                 }
