@@ -104,10 +104,14 @@ public class DrawingPanel extends JPanel implements setDrawingColor, setBackgrou
 
 
     private void buttonClicked(MouseEvent e) {
-        String selectedDrawingShape = clicked.entrySet().stream()
-                .filter(Map.Entry::getValue)
-                .map(Map.Entry::getKey)
-                .findFirst().orElse("");
+        String selectedDrawingShape = "";
+
+for (Map.Entry<String, Boolean> entry : clicked.entrySet()) {
+    if (entry.getValue()) {
+        selectedDrawingShape = entry.getKey();
+        break;
+    }
+}
 
         switch (selectedDrawingShape) {
             case "DrawButton" -> {
