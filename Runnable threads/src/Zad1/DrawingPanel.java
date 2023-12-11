@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class DrawingPanel extends JPanel implements setDrawingColor, setBackgroundColor {
 
-    // Existing member variables
+   
     private final List<Point> pencilPoints = new ArrayList<>();
     private Point currentPencilPoint;
     private List<Drawable> drawables = new ArrayList<>();
@@ -58,8 +58,7 @@ public class DrawingPanel extends JPanel implements setDrawingColor, setBackgrou
     private class DrawButtonRunnable implements Runnable {
         @Override
         public void run() {
-           // List<Point> pencilPoints = new ArrayList<>();
-          //  Point currentPencilPoint;
+    
 
             addMouseMotionListener(new MouseAdapter() {
                 @Override
@@ -87,7 +86,7 @@ public class DrawingPanel extends JPanel implements setDrawingColor, setBackgrou
             while (clicked.get("DrawButton")) {
                 SwingUtilities.invokeLater(() -> repaint());
                 try {
-                    Thread.sleep(10);  // Adjust the sleep duration as needed
+                    Thread.sleep(10);  
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -150,8 +149,6 @@ public class DrawingPanel extends JPanel implements setDrawingColor, setBackgrou
     private class RubberRunnable implements Runnable {
         @Override
         public void run() {
-//            List<Point> rubberPoints = new ArrayList<>();
-//            Point currentRubberPoint;
 
             addMouseMotionListener(new MouseAdapter() {
                 @Override
@@ -169,7 +166,7 @@ public class DrawingPanel extends JPanel implements setDrawingColor, setBackgrou
             while (clicked.get("rubber")) {
                 SwingUtilities.invokeLater(() -> repaint());
                 try {
-                    Thread.sleep(10);  // Adjust the sleep duration as needed
+                    Thread.sleep(10); 
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
