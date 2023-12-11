@@ -62,7 +62,7 @@ public class DrawingPanel extends JPanel implements setDrawingColor, setBackgrou
             while (clicked.get("DrawButton")) {
                 SwingUtilities.invokeLater(() -> repaint());
                 try {
-                    Thread.sleep(10);  // Adjust the sleep duration as needed
+                    Thread.sleep(10);  
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -92,7 +92,7 @@ public class DrawingPanel extends JPanel implements setDrawingColor, setBackgrou
             while (clicked.get("rubber")) {
                 SwingUtilities.invokeLater(() -> repaint());
                 try {
-                    Thread.sleep(10);  // Adjust the sleep duration as needed
+                    Thread.sleep(10); 
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
