@@ -1,15 +1,16 @@
 package Zad1;
 
+import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
-class DrawRect implements Drawable {
+public class DrawRect implements Drawable, setDrawingColor {
     private int startX, startY, endX, endY;
     private Color color;
 
-    public DrawRect(Color color){
+    public DrawRect(Color color) {
         this.color = color;
     }
-
 
     public void setStartPoint(int x, int y) {
         startX = x;
@@ -32,4 +33,8 @@ class DrawRect implements Drawable {
         g2d.drawRect(x, y, width, height);
     }
 
+    @Override
+    public void setDrawingColor(Color drawingColor) {
+        color = drawingColor;
+    }
 }
