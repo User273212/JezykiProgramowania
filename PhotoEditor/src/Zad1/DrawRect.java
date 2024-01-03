@@ -30,6 +30,7 @@ public class DrawRect implements Drawable, setDrawingColor {
         int y = Math.min(startY, endY);
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(color);
+        g2d.setStroke(new BasicStroke(3));
         g2d.drawRect(x, y, width, height);
     }
 

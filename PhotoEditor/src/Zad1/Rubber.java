@@ -11,6 +11,8 @@ public class Rubber implements Drawable, setDrawingColor{
 
     void draw(Graphics2D g2d, int x, int y) {
         points.add(new Point(x, y));
+        g2d.setStroke(new BasicStroke(3));
+        g2d.setColor(color);
         if (points.size() > 1) {
             Point p1 = points.get(points.size() - 2);
             Point p2 = points.get(points.size() - 1);
@@ -19,19 +21,14 @@ public class Rubber implements Drawable, setDrawingColor{
     }
 
     void startDrawing(int x, int y) {
-        // Don't clear points, retain the drawn lines
         points.add(new Point(x, y));
     }
-
-    public void clearPoints() {
-        points.clear();
-    }
-
 
 
     @Override
     public void draw(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
+        g2d.setStroke(new BasicStroke(3));
         g2d.setColor(color);
         for (int i = 1; i < points.size(); i++) {
             Point p1 = points.get(i - 1);

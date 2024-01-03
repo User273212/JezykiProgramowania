@@ -1,6 +1,7 @@
 package Zad1;
 
 import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,10 @@ public class PencilDrawing implements Drawable, setDrawingColor {
         if (points.size() > 1) {
             Point p1 = points.get(points.size() - 2);
             Point p2 = points.get(points.size() - 1);
-            g2d.drawLine(p1.x, p1.y, p2.x, p2.y);
+
+            if (p1 != null && p2 != null) {
+                g2d.drawLine(p1.x, p1.y, p2.x, p2.y);
+            }
         }
     }
 
@@ -23,21 +27,27 @@ public class PencilDrawing implements Drawable, setDrawingColor {
         points.add(new Point(x, y));
     }
 
-   public void clearPoints() {
-       points.clear();
+    void startDrawing() {
+        points.add(null);
     }
 
-
+    public void clearPoints() {
+        points.clear();
+    }
 
     @Override
     public void draw(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setStroke(new BasicStroke(3));
         g2d.setColor(color);
+
         for (int i = 1; i < points.size(); i++) {
             Point p1 = points.get(i - 1);
             Point p2 = points.get(i);
-            g2d.drawLine(p1.x, p1.y, p2.x, p2.y);
+
+            if (p1 != null && p2 != null) {
+                g2d.drawLine(p1.x, p1.y, p2.x, p2.y);
+            }
         }
     }
 
