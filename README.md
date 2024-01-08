@@ -1,1 +1,1 @@
-# JezykiProgramowania
+# JezykiProgramowania PhotoEditor to ukończone zadanie
