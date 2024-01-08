@@ -2,23 +2,33 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Ellipse2D;
+import java.util.ArrayList;
+import java.util.List;
+import java.awt.Shape;
 
 class Circles extends JPanel {
-
-    private Shape selectedShape;
-    private final Ellipse2D ellipse;
     private int size = 50;
+    private Shape selectedShape;
+    private int index;
+   // private final Ellipse2D ellipse;
 
-    Circles() {
+    private List<Shape> shapeList = new ArrayList<>();
+    Circles(int size) {
 
-        ellipse = new Ellipse2D.Double(300, 100, size, size);
-        addShape(ellipse);
+     //   ellipse = new Ellipse2D.Double(300, 100, this.size, this.size);
+      //  shapeList.add(ellipse);
+      //  addShape(ellipse);
 
         addMouseListener(new MouseAdapter() {
+            private int size = Circles.this.size;
             @Override
             public void mouseClicked(MouseEvent e) {
-                selectShape(e.getPoint());
-                repaint();
+                if(selectShape(e.getPoint())) {
+                    repaint();
+                } else {
+                    shapeList.add(new Ellipse2D.Double(e.getX(), e.getY(), size, size));
+                    repaint();
+                }
             }
         });
 
@@ -38,6 +48,10 @@ class Circles extends JPanel {
         this.size = size;
     }
 
+    public List<Shape> getShapelist(){
+        return shapeList;
+    }
+
     private void addShape(Shape shape) {
         if (selectedShape == null) {
             selectedShape = shape;
@@ -45,16 +59,24 @@ class Circles extends JPanel {
         repaint();
     }
 
-    private void selectShape(Point clickPoint) {
-        if (ellipse.contains(clickPoint)) {
-            selectedShape = ellipse;
-        }
+    private boolean selectShape(Point clickPoint) {
+//        if (ellipse.contains(clickPoint)) {
+//            selectedShape = ellipse;
+//            return true;
+//        }
+//        return false;
+        for(Shape shape : shapeList)
+            if (shape.contains(clickPoint)) {
+                selectedShape = shapeList.get(index);
+                index = shapeList.indexOf(shape);
+                return true;
+            }
+            return false;
     }
 
     private void handleKeyPress(KeyEvent e) {
         int keyCode = e.getKeyCode();
         int step = 10;
-
         switch (keyCode) {
             case KeyEvent.VK_UP -> moveShape(selectedShape, 0, -step);
             case KeyEvent.VK_DOWN -> moveShape(selectedShape, 0, step);
@@ -82,10 +104,13 @@ class Circles extends JPanel {
     }
 
     private void toggleShape() {
-         if (selectedShape == null) {
-            selectedShape = ellipse;
-        } else {
-            selectedShape = ellipse;
+        int next = 0;
+        while (selectedShape == null) {
+            selectedShape = shapeList.get(0);
+            if (selectedShape != null) {
+                selectedShape = shapeList.get(next);
+                next++;
+            }
         }
     }
 
@@ -95,12 +120,14 @@ class Circles extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
 
         g2d.setColor(Color.BLUE);
-        g2d.draw(ellipse);
+
+        for(Shape shape : shapeList)
+            g2d.draw(shape);
 
         // Podświetl zaznaczony kształt
         g2d.setColor(Color.RED);
         if (selectedShape != null) {
-            g2d.draw(selectedShape);
+            g2d.draw(shapeList.get(index));
         }
     }
 }
